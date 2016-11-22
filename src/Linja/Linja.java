@@ -406,10 +406,10 @@ public class Linja extends MiniJava {
             stein = readStein("Folgezug: Weite " + folgezuege + "\n", spieler, false);
             //stein bewegen
             folgezuege = setzeZug(stein, folgezuege, true);
-        }
 
-        //Feld ausgeben
-        System.out.println(output());
+            //Feld ausgeben
+            System.out.println(output());
+        }
 
         //Bonuszug
         if (folgezuege == 6) {
@@ -429,10 +429,10 @@ public class Linja extends MiniJava {
                 }
                 //Wiederhole bis zug gültig (also folgezuege >= 0)
             }while (folgezuege < 0);
-        }
 
-        //Feld ausgeben
-        System.out.println(output());
+            //Feld ausgeben
+            System.out.println(output());
+        }
     }
 
     /**
