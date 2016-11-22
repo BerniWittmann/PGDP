@@ -309,7 +309,7 @@ public class Linja extends MiniJava {
     /**
      * Berechnet den Punktwert der Reihe
      *
-     * @param reihe
+     * @param reihe Index der Reihe
      * @return Punktwert
      */
     private static int berechneWert(int reihe) {
@@ -324,7 +324,7 @@ public class Linja extends MiniJava {
      * <p>
      * Da Math.abs nicht erlaubt ist, muss diese Funktion selbst geschrieben werden... :(
      *
-     * @param x
+     * @param x Wert
      * @return Betrag des Wertes x
      */
     private static int betrag(int x) {
@@ -338,8 +338,8 @@ public class Linja extends MiniJava {
     /**
      * Zeigt das Ergebnis an
      *
-     * @param punkteSpieler1
-     * @param punkteSpieler2
+     * @param punkteSpieler1 Punkte des Spieler 1
+     * @param punkteSpieler2 Punkte des Spieler 2
      */
     private static void zeigeErgebnis(int punkteSpieler1, int punkteSpieler2) {
         String msg;
@@ -435,18 +435,15 @@ public class Linja extends MiniJava {
             stein = read(msg + "Bitte wähle einen Stein (1-12)");
             steinGueltig = true;
 
-            //Prüfen ob Nummer zulässig ist
-            if (spieler > 0 && stein > 12 && stein <= 0) {
-                steinGueltig = false;
-                write("Bitte einen gültigen Stein auswählen!");
-                continue;
-            } else if (spieler < 0 && stein < -12 && stein >= 0) {
+            //Prüfen ob Stein zulässig ist
+            if (gueltigeEingabe(stein, spieler)) {
                 steinGueltig = false;
                 write("Bitte einen gültigen Stein auswählen!");
                 continue;
             }
 
             //Prüfung ob Stein eine gültige Position hat
+            //Wenn er keine Position hat, ist er bereits im Ziel und kann nicht mehr bewegt werden
             int steinPosition[] = findeStein(stein);
             if (steinPosition[0] < 0 || steinPosition[1] < 0) {
                 steinGueltig = false;
@@ -543,7 +540,7 @@ public class Linja extends MiniJava {
         //Wähle Startspieler
         int aktuellerSpieler = waehleZufaelligenSpieler();
 
-        boolean spielBeendet = false;
+        boolean spielBeendet;
 
         //Wiederhole solange bis Spiel beendet ist;
         do {
