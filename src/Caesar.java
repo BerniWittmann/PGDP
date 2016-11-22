@@ -2,8 +2,8 @@ public class Caesar {
 
     private static char shift(char c, int k) {
         String LC_LETTERS = "abcdefghijklmnopqrstuvwxyz";
-        String UC_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        int ALPHABET_LENGTH = 26;
+        String UC_LETTERS = LC_LETTERS.toUpperCase();
+        int ALPHABET_LENGTH = LC_LETTERS.length();
 
         // index of char
         int i = LC_LETTERS.indexOf(c);
