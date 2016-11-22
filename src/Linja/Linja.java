@@ -396,7 +396,7 @@ public class Linja extends MiniJava {
         } while (folgezuege < 0);
 
         //Feld ausgeben
-        System.out.println(output());
+        renderSpielfeld();
 
         //Folgezug
         if (folgezuege > 0 && folgezuege < 6) {
@@ -408,7 +408,7 @@ public class Linja extends MiniJava {
             folgezuege = setzeZug(stein, folgezuege, true);
 
             //Feld ausgeben
-            System.out.println(output());
+            renderSpielfeld();
         }
 
         //Bonuszug
@@ -431,7 +431,7 @@ public class Linja extends MiniJava {
             }while (folgezuege < 0);
 
             //Feld ausgeben
-            System.out.println(output());
+            renderSpielfeld();
         }
     }
 
@@ -589,12 +589,18 @@ public class Linja extends MiniJava {
         return bonus;
     }
 
+    private static void renderSpielfeld() {
+        String output = output();
+        System.out.println(output);
+        write(output);
+    }
+
     public static void main(String args[]) {
         boolean bonus = frageBonus();
         //Initialisiere Spiel
         initSpiel();
         //Gib Ausgangs-Spielfeld aus
-        System.out.println(output());
+        renderSpielfeld();
 
         //Wähle Startspieler
         int aktuellerSpieler = waehleZufaelligenSpieler();
