@@ -1,16 +1,20 @@
 public class Caesar {
-    private static String LC_LETTERS = "abcdefghijklmnopqrstuvwxyz";
-    private static String UC_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static int ALPHABET_LENGTH = 26;
 
-    public static char shift(char c, int k) {
+    private static char shift(char c, int k) {
+        String LC_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+        String UC_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int ALPHABET_LENGTH = 26;
+
         // index of char
         int i = LC_LETTERS.indexOf(c);
         int j = UC_LETTERS.indexOf(c);
 
+        //check if char is transformable
         if (i == -1 && j == -1) {
+            //return non-transformable chars as they are
             return c;
         }
+
         if (i < 0) {
             //Char is uppercase
             if (k < 0) {
@@ -19,6 +23,7 @@ public class Caesar {
             }
             //calculate new shifted index
             j = (j + k) % ALPHABET_LENGTH;
+            //return char at shifted position
             return UC_LETTERS.charAt(j);
         } else {
             //Char is lowercase
@@ -28,19 +33,22 @@ public class Caesar {
             }
             //calculate new shifted index
             i = (i + k) % ALPHABET_LENGTH;
+            //return char at shifted position
             return LC_LETTERS.charAt(i);
         }
     }
 
-    public static String encrypt(String s, int k) {
+    private static String encrypt(String s, int k) {
         String encrypted = "";
+        //loop through array
         for (int i = 0; i < s.length(); i++) {
+            //shift each single char
             encrypted += shift(s.charAt(i), k);
         }
         return encrypted;
     }
 
-    public static String decrypt(String s, int k) {
+    private static String decrypt(String s, int k) {
         return encrypt(s, -(k % 26));
     }
 
