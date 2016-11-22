@@ -327,7 +327,7 @@ public class Linja extends MiniJava {
 
     /**
      * Berechnet den Betrag
-     * <p>
+     *
      * Da Math.abs nicht erlaubt ist, muss diese Funktion selbst geschrieben werden... :(
      *
      * @param x Wert
@@ -515,7 +515,7 @@ public class Linja extends MiniJava {
 
     /**
      * Vergleicht zwei Strings auf Gleichheit
-     * Normalerweise würde man hier die equals Methode verwenden, allerdings nicht erlaubt
+     * Normalerweise würde man anstelle die equals Methode verwenden, allerdings nicht erlaubt
      *
      * @param s1 String 1
      * @param s2 String 2
@@ -539,8 +539,8 @@ public class Linja extends MiniJava {
 
     /**
      * Wählt zufällig einen der Spieler
-     * <p>
-     * Da Random.nextInt() und MiniJava.drawCard nicht erlaubt ist, muss diese Funktion selbst geschrieben werden... :(
+     *
+     * Da Random.nextInt() und MiniJava.drawCard(x,y) nicht erlaubt ist, muss diese Funktion selbst geschrieben werden... :(
      *
      * @return 1 oder -1
      */
