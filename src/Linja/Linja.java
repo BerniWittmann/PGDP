@@ -145,6 +145,9 @@ public class Linja extends MiniJava {
 
                 //Stein im Ziel --> keine Folgezüge
                 return 0;
+            } else if (zielReihe < 0) {
+                //Prüfung eigenes Ende
+                return -1;
             }
         } else if (stein < 0) {
             //Spieler 2
@@ -160,6 +163,9 @@ public class Linja extends MiniJava {
                 }
                 //Stein im Ziel --> keine Folgezüge
                 return 0;
+            } else if (zielReihe >= spielfeld.length) {
+                //Prüfung eigenes Ende
+                return -1;
             }
         }
 
@@ -365,8 +371,9 @@ public class Linja extends MiniJava {
      *
      * @param spieler ist 1 (Spielsteine 1 bis 12) oder -1 (Spielsteine -1 bis
      *                -12)
+     * @param bonus   gibt an ob Bonusregel aktiviert ist
      */
-    private static void spielerZieht(int spieler) {
+    private static void spielerZieht(int spieler, boolean bonus) {
         //Nachricht wer an der Reihe ist
         write("Spieler " + spieler + " ist an der Reihe");
 
@@ -376,13 +383,13 @@ public class Linja extends MiniJava {
         do {
             //Anfangszug
             //Abfrage welcher Stein gezogen werden soll.
-            stein = readStein("Anfangszug\n", spieler);
+            stein = readStein("Anfangszug: Weite 1\n", spieler, false);
 
             //Stein ist gültig --> Stein wird gezogen
             folgezuege = setzeZug(stein, 1, true);
 
             //prüfung ob Zug ungültig
-            if(folgezuege < 0) {
+            if (folgezuege < 0) {
                 write("Bitte einen gültigen Zug auswählen!");
             }
             //Wiederhole bis zug gültig (also folgezuege >= 0)
@@ -396,7 +403,7 @@ public class Linja extends MiniJava {
             //Nachricht Folgezug
             write("Du hast bekommst einen Folgezug der Weite: " + folgezuege);
             //Stein abfragen
-            stein = readStein("Folgezug\n", spieler);
+            stein = readStein("Folgezug: Weite " + folgezuege + "\n", spieler, false);
             //stein bewegen
             folgezuege = setzeZug(stein, folgezuege, true);
         }
@@ -408,12 +415,20 @@ public class Linja extends MiniJava {
         if (folgezuege == 6) {
             //Nachricht Bonuszug
             write("Du bekommst einen Bonuszug!");
-            //Stein abfragen
-            stein = readStein("Bonuszug\n", spieler);
-            //Richtung abfragen
-            boolean vorwaerts = readVorwaerts();
-            //stein bewegen
-            setzeZug(stein, 1, vorwaerts);
+
+            do {
+                //Stein abfragen
+                stein = readStein("Bonuszug: Weite 1\n", spieler, bonus);
+                //Richtung abfragen
+                boolean vorwaerts = readVorwaerts();
+                //stein bewegen
+                folgezuege = setzeZug(stein, 1, vorwaerts);
+                //prüfung ob Zug ungültig
+                if (folgezuege < 0) {
+                    write("Bitte einen gültigen Zug auswählen!");
+                }
+                //Wiederhole bis zug gültig (also folgezuege >= 0)
+            }while (folgezuege < 0);
         }
 
         //Feld ausgeben
@@ -425,21 +440,37 @@ public class Linja extends MiniJava {
      *
      * @param msg     Nachricht beim Einlesen
      * @param spieler Spieler
+     * @param bonus   Bonus-Regel
      * @return steinnummer
      */
-    private static int readStein(String msg, int spieler) {
+    private static int readStein(String msg, int spieler, boolean bonus) {
         int stein;
         boolean steinGueltig;
+        //Generiere Nachricht
+        String nachricht = msg + "Bitte wähle einen Stein (" + spieler + " bis " + spieler * 12 + ")";
+        if (bonus) {
+            nachricht += "(" + spieler * -1 + " bis " + spieler * -12 + ")\n" +
+                    "Du kannst auch einen Stein des Gegners bewegen.";
+        }
         do {
             //Lese Steinnummer ein
-            stein = read(msg + "Bitte wähle einen Stein (1-12)");
+            stein = read(nachricht);
             steinGueltig = true;
 
             //Prüfen ob Stein zulässig ist
-            if (gueltigeEingabe(stein, spieler)) {
-                steinGueltig = false;
-                write("Bitte einen gültigen Stein auswählen!");
-                continue;
+            if (bonus) {
+                //Wenn Bonus aktiv, dann sind auch Steine des Gegners gültig
+                if(stein == 0 || stein < -12 || stein > 12) {
+                    steinGueltig = false;
+                    write("Bitte einen gültigen Stein auswählen!");
+                    continue;
+                }
+            } else {
+                if (!gueltigeEingabe(stein, spieler)) {
+                    steinGueltig = false;
+                    write("Bitte einen gültigen Stein auswählen!");
+                    continue;
+                }
             }
 
             //Prüfung ob Stein eine gültige Position hat
@@ -531,7 +562,35 @@ public class Linja extends MiniJava {
         }
     }
 
+    /**
+     * Fragt die Spieler nach der Bonus Regel
+     *
+     * @return boolean
+     */
+    private static boolean frageBonus() {
+        boolean gueltig;
+        boolean bonus = false;
+        do {
+            //Lese String ein
+            String s = readString("Bonus-Regel?\nWillst du mit Bonus-Regel spielen? \n 'ja' für Ja\n'nein' für Nein");
+            //Prüfe String
+            if (gleicheStrings(s, "Ja") || gleicheStrings(s, "ja")) {
+                bonus = true;
+                gueltig = true;
+            } else if (gleicheStrings(s, "Nein") || gleicheStrings(s, "nein")) {
+                bonus = false;
+                gueltig = true;
+            } else {
+                gueltig = false;
+                write("Bitte einen gültigen Wert angeben!");
+            }
+            //Wiederhole solange bis String gültig
+        } while (!gueltig);
+        return bonus;
+    }
+
     public static void main(String args[]) {
+        boolean bonus = frageBonus();
         //Initialisiere Spiel
         initSpiel();
         //Gib Ausgangs-Spielfeld aus
@@ -545,7 +604,7 @@ public class Linja extends MiniJava {
         //Wiederhole solange bis Spiel beendet ist;
         do {
             //Spieler zieht
-            spielerZieht(aktuellerSpieler);
+            spielerZieht(aktuellerSpieler, bonus);
 
             //Überprüfe Spiel beendet
             spielBeendet = spielende();
