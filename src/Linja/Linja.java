@@ -589,10 +589,18 @@ public class Linja extends MiniJava {
         return bonus;
     }
 
+    /**
+     *  Renders the Spielfeld
+     *  either only in console or also in a window
+     */
     private static void renderSpielfeld() {
+        boolean RENDER_SPIELFELD_ONLY_IN_CONSOLE = false;
+
         String output = output();
         System.out.println(output);
-        write(output);
+        if(!RENDER_SPIELFELD_ONLY_IN_CONSOLE) {
+            write(output);
+        }
     }
 
     public static void main(String args[]) {
