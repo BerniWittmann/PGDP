@@ -1,3 +1,5 @@
+package Caesar;
+
 public class Caesar {
 
     private static char shift(char c, int k) {
@@ -53,7 +55,7 @@ public class Caesar {
     }
 
     public static void main(String[] args) {
-        String s = "Caesar ist toll! Das wäre ein Test. Kann er auch ein scharfes-S ß?";
+        String s = "Cäsar ist toll! Das wäre ein Test. Kann er auch ein scharfes-S ß?";
         System.out.println(s);
 
         String encrypted = encrypt(s, 10);
