@@ -113,7 +113,7 @@ public class Toolbox {
 
         if (m.length > 1) {
             //Rufe Hilfsmethode auf
-            m = reverse_rec(m, 0);
+            m = reverse(m, 0);
         }
 
         //Ausgeben des Arrays (Auch wieder rekursiv...)
@@ -128,7 +128,7 @@ public class Toolbox {
      * @param start Start Index
      * @return Array
      */
-    public static int[] reverse_rec(int[] m, int start) {
+    public static int[] reverse(int[] m, int start) {
         //Finde mittleren Index
         int mittlererIndex = m.length / 2;
 
