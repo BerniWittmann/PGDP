@@ -143,7 +143,7 @@ public class Toolbox {
         m[m.length - start - 1] = temp;
 
         //Rekursives Aufrufen
-        m = reverse_rec(m, start + 1);
+        m = reverse(m, start + 1);
 
         return m;
     }
