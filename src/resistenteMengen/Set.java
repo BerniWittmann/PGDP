@@ -1,6 +1,8 @@
 package resistenteMengen;
 
-public class Set<T> {
+import java.util.Iterator;
+
+public class Set<T> implements Iterable<T>{
     private final List<T> list;
 
     public Set() {
@@ -84,5 +86,28 @@ public class Set<T> {
         if (!set5.equals(set2)) {
             System.out.println("set 5 is not equal to set 2");
         }
+    }
+    @Override
+    public Iterator<T> iterator() {
+        Iterator<T> it = new Iterator<T>() {
+
+            private ListElement current = list.head;
+
+            @Override
+            public boolean hasNext() {
+                return current.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return (T) current.getNext().getValue();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return it;
     }
 }
