@@ -41,7 +41,7 @@ public class Compiler {
             throw new RuntimeException("Compilen ist fehlgeschlagen.");
         }
 
-        System.out.println(Interpreter.programToString(cgv.getProgram()));
+        //System.out.println(Interpreter.programToString(cgv.getProgram()));
 
         System.out.println("Compiled");
         return cgv.getProgram();
